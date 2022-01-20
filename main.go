@@ -9,15 +9,17 @@ import (
 
 func main() {
 	var pwdinput string
-	flag.StringVar(&pwdinput, "pwd", "pwd", "-pwd xxx")
+	flag.StringVar(&pwdinput, "input", "", "-pwd xxx")
+	flag.Parse()
 	if inBlackList(pwdinput) {
 		fmt.Printf("pwd %s is invalid \n", pwdinput)
+		return
 	}
-	if app.CheckPassword(pwdinput) {
+	if !app.CheckPassword(pwdinput) {
 		fmt.Printf("pwd %s is invalid \n", pwdinput)
-	} else {
-		fmt.Printf("pwd %s is check ok \n", pwdinput)
+		return
 	}
+	fmt.Printf("pwd %s is check ok \n", pwdinput)
 }
 
 func inBlackList(pwd string) bool {
