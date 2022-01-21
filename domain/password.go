@@ -46,7 +46,7 @@ func regularCountsInit(pwd *Password) {
 		c0 := pwd.initialStr[i]
 		c1 := pwd.initialStr[i+1]
 		c2 := pwd.initialStr[i+2]
-		if ok, inc := isCharSequence(c0, c1, c2); ok {
+		if ok, inc := isCharSequence3(c0, c1, c2); ok {
 			i = i + 2
 			count := regularCount{initialChar: c0, initialIndex: i, times: 3}
 			for j := i + 1; j < pwd.Len; j++ {
@@ -61,27 +61,53 @@ func regularCountsInit(pwd *Password) {
 	}
 }
 
-func isCharSequence(c0, c1, c2 byte) (bool, int) {
-	if c0 == c1 && c1 == c2 {
+func isCharSequence3(c0, c1, c2 byte) (bool, int) {
+	if isSameType3(c0, c1, c2) && c0 == c1 && c1 == c2 {
 		return true, 0
 	}
-	if c0 == c1-1 && c1 == c2-1 {
+	if isSameType3(c0, c1, c2) && c0 == c1-1 && c1 == c2-1 {
 		return true, 1
 	}
-	if c0 == c1+1 && c1 == c2+1 {
+	if isSameType3(c0, c1, c2) && c0 == c1+1 && c1 == c2+1 {
 		return true, -1
 	}
 	return false, 0
 }
 
+func isSameType3(c0, c1, c2 byte) bool {
+	if c0 >= '0' && c0 <= '9' && c1 >= '0' && c1 <= '9' && c2 >= '0' && c2 <= '9' {
+		return true
+	}
+	if c0 >= 'a' && c0 <= 'z' && c1 >= 'a' && c1 <= 'z' && c2 >= 'a' && c2 <= 'z' {
+		return true
+	}
+	if c0 >= 'A' && c0 <= 'Z' && c1 >= 'A' && c1 <= 'Z' && c2 >= 'A' && c2 <= 'Z' {
+		return true
+	}
+	return false
+}
+
+func isSameType2(c0, c1 byte) bool {
+	if c0 >= '0' && c0 <= '9' && c1 >= '0' && c1 <= '9' {
+		return true
+	}
+	if c0 >= 'a' && c0 <= 'z' && c1 >= 'a' && c1 <= 'z' {
+		return true
+	}
+	if c0 >= 'A' && c0 <= 'Z' && c1 >= 'A' && c1 <= 'Z' {
+		return true
+	}
+	return false
+}
+
 func isCharSequence2(c0, c1 byte, inc int) bool {
-	if c0 == c1 && inc == 0 {
+	if isSameType2(c0, c1) && c0 == c1 && inc == 0 {
 		return true
 	}
-	if c0+1 == c1 && inc == 1 {
+	if isSameType2(c0, c1) && c0+1 == c1 && inc == 1 {
 		return true
 	}
-	if c0-1 == c1 && inc == -1 {
+	if isSameType2(c0, c1) && c0-1 == c1 && inc == -1 {
 		return true
 	}
 	return false
