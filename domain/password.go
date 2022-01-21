@@ -1,5 +1,11 @@
 package domain
 
+const (
+	minLen   = 8
+	maxLen   = 20
+	maxTypes = 3
+)
+
 type Password struct {
 	initialStr    string
 	Len           int
@@ -69,6 +75,9 @@ func isCharSequence(c0, c1, c2 byte) (bool, int) {
 }
 
 func isCharSequence2(c0, c1 byte, inc int) bool {
+	if c0 == c1 && inc == 0 {
+		return true
+	}
 	if c0+1 == c1 && inc == 1 {
 		return true
 	}

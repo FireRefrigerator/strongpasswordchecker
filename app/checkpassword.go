@@ -17,3 +17,14 @@ func CheckPassword(str string) bool {
 	}
 	return true
 }
+
+func CheckPasswordStep(str string) int {
+	password := domain.NewPassword(str)
+	passwordStep := &domain.PasswordModifyStep{Password: password}
+	domain.Repeat(&domain.LessThanHandler{}, passwordStep)
+	domain.Repeat(&domain.MoreThanHandler{}, passwordStep)
+	domain.Repeat(&domain.SequenceHandler{}, passwordStep)
+	domain.Repeat(&domain.TypesHandler{}, passwordStep)
+	domain.Repeat(&domain.Top10Handler{}, passwordStep)
+	return passwordStep.Step
+}
