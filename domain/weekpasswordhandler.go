@@ -72,7 +72,7 @@ func (h *TypesHandler) Action(pwdStep *PasswordModifyStep) {
 	pwdStep.increaseStep()
 }
 
-/* top 10密码处理器 */
+/* top 10弱密码处理器 */
 type Top10Handler struct {
 }
 
