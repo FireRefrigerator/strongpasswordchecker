@@ -21,10 +21,20 @@ func CheckPassword(str string) bool {
 func CheckPasswordStep(str string) int {
 	password := domain.NewPassword(str)
 	passwordStep := &domain.PasswordModifyStep{Password: password}
-	domain.Repeat(&domain.LessThanHandler{}, passwordStep)
-	domain.Repeat(&domain.MoreThanHandler{}, passwordStep)
-	domain.Repeat(&domain.SequenceHandler{}, passwordStep)
-	domain.Repeat(&domain.TypesHandler{}, passwordStep)
-	domain.Repeat(&domain.Top10Handler{}, passwordStep)
+	repeat(&domain.LessThanHandler{}, passwordStep)
+	repeat(&domain.MoreThanHandler{}, passwordStep)
+	repeat(&domain.SequenceHandler{}, passwordStep)
+	repeat(&domain.TypesHandler{}, passwordStep)
+	repeat(&domain.Top10Handler{}, passwordStep)
 	return passwordStep.Step
+}
+
+var repeat = func(handler domain.Handler, pwdStep *domain.PasswordModifyStep) *domain.PasswordModifyStep {
+	for {
+		if !handler.Match(pwdStep.Password) {
+			break
+		}
+		handler.Action(pwdStep)
+	}
+	return pwdStep
 }
